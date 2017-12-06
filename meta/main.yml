@@ -1,0 +1,26 @@
+galaxy_info:
+  author: Christian Schnidrig
+  description: Create file system and mount data volumes on VMs build with the openstack service builder role.
+  company: SWITCH
+
+  license: license (GPLv3)
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: GenericUNIX
+      versions:
+      - all
+
+  #cloud_platforms:
+  #  - openstack
+
+  galaxy_tags:
+    - openstack
+    - cloud
+    - system
+
+
+dependencies:
+    - openstack-service-builder
+

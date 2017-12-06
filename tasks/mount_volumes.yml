@@ -1,0 +1,48 @@
+---
+
+- name: "create mountpoint"
+  file:
+    dest: "{{mount_root}}{{item.name}}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  with_items:
+    - "{{ os_volumes[inventory_hostname] }}"
+  tags:
+    - mount
+
+- name: "make filesystem"
+  filesystem:
+    fstype: "{{ item.fs }}"
+    dev: "{{ item.device }}"
+    opts: "-L {{ item.name }}"
+  with_items:
+    - "{{ os_volumes[inventory_hostname] }}"
+  tags:
+    - mount
+
+- name: "mount volumes"
+  mount:
+    name: "{{mount_root}}{{ item.name }}"
+    #src: "{{ item.device }}"
+    src: "LABEL={{ item.name }}"
+    fstype: "{{ item.fs }}"
+    opts: noatime
+    state: "{{ item.state }}"
+  with_items:
+    - "{{ os_volumes[inventory_hostname] }}"
+  tags:
+    - mount
+
+- name: "set ownership"
+  file:
+    path: "{{mount_root}}{{ item.name }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - "{{ os_volumes[inventory_hostname] }}"
+  tags:
+    - mount
