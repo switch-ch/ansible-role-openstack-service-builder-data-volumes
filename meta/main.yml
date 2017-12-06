@@ -21,6 +21,4 @@ galaxy_info:
     - system
 
 
-dependencies:
-    - openstack-service-builder
-
+dependencies: []
