@@ -1,3 +1,4 @@
 ---
 
 - import_tasks: mount_volumes.yml
+  when: os_volumes[inventory_hostname] is defined
