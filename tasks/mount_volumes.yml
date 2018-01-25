@@ -30,7 +30,7 @@
     #src: "{{ item.device }}"
     src: "LABEL={{ item.name }}"
     fstype: "{{ item.fs }}"
-    opts: noatime
+    opts: "{{ item.mount_opts | default(mount_opts) }}"
     state: "{{ item.state }}"
   with_items:
     - "{{ os_volumes[inventory_hostname] }}"
