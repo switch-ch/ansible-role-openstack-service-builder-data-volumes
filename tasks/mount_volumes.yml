@@ -2,7 +2,7 @@
 
 - name: "create mountpoint"
   file:
-    dest: "{{ item.mount_point | default(mount_root) }}{{ item.name | regex_replace('root', '') }}"
+    dest: "{{ item.mount_point | default(mount_root) }}{{ item.name | regex_replace('root.*$', '') }}"
     state: directory
     owner: root
     group: root
@@ -26,7 +26,7 @@
 
 - name: "mount volumes"
   mount:
-    name: "{{ item.mount_point | default(mount_root) }}{{ item.name | regex_replace('root', '') }}"
+    name: "{{ item.mount_point | default(mount_root) }}{{ item.name | regex_replace('root.*$', '') }}"
     #src: "{{ item.device }}"
     src: "LABEL={{ item.name }}"
     fstype: "{{ item.fs }}"
@@ -40,7 +40,7 @@
 
 - name: "set ownership"
   file:
-    path: "{{ item.mount_point | default(mount_root) }}{{ item.name | regex_replace('root', '') }}"
+    path: "{{ item.mount_point | default(mount_root) }}{{ item.name | regex_replace('root.*$', '') }}"
     state: directory
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
