@@ -50,3 +50,18 @@
   when: item.state != "unmanaged"
   tags:
     - mount
+
+- name: "export"
+  copy:
+    dest: "/etc/exports.d/{{ item.name }}.exports"
+    content: "{{ item.mount_point | default(mount_root) }}{{ item.name | regex_replace('root.*$', '') }} {{ item.exports }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  with_items:
+    - "{{ os_volumes[inventory_hostname] }}"
+  when: item.exports is defined
+  tags:
+    - mount
+  notify:
+    - restart nfs-server
